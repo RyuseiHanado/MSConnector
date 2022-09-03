@@ -34,8 +34,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    var navigationController: UINavigationController?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        // set navigationController
+        let viewController: ViewController = ViewController()
+        navigationController = UINavigationController(rootViewController: viewController)
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .systemBlue
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        // ボタン類の色
+        navigationController?.navigationBar.tintColor = UIColor.white
+        
+        // Make all buttons with green text.
+        let buttonAppearance = UIBarButtonItemAppearance()
+        buttonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.systemGreen]
+        navigationController?.navigationItem.standardAppearance?.buttonAppearance = buttonAppearance
+        navigationController?.navigationItem.scrollEdgeAppearance?.buttonAppearance = buttonAppearance // For iPhone small navigation bar in landscape.
+        
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window?.rootViewController = navigationController
+        self.window?.makeKeyAndVisible()
+        
         
         // The MSAL Logger should be set as early as possible in the app launch sequence, before any MSAL
         // requests are made.

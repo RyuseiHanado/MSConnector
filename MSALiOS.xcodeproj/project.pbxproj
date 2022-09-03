@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A029D1028B6057F00BA95C0 /* AccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A029D0F28B6057F00BA95C0 /* AccountModel.swift */; };
+		1A9DBC1728B82D6200522B67 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9DBC1628B82D6200522B67 /* ProfileViewController.swift */; };
+		1A9DBC1928B82D7E00522B67 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A9DBC1828B82D7E00522B67 /* Profile.storyboard */; };
+		1A9DBC2728B9ECB300522B67 /* AccessKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9DBC2628B9ECB300522B67 /* AccessKey.swift */; };
 		4DC17E926BAC0BBF780DD200 /* Pods_MSALiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD5263E088346F01270DB01B /* Pods_MSALiOS.framework */; };
 		FBA79EA11E9A038700179A54 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA79EA01E9A038700179A54 /* AppDelegate.swift */; };
 		FBA79EA31E9A038700179A54 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA79EA21E9A038700179A54 /* ViewController.swift */; };
@@ -16,6 +20,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A029D0F28B6057F00BA95C0 /* AccountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountModel.swift; sourceTree = "<group>"; };
+		1A9DBC1628B82D6200522B67 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		1A9DBC1828B82D7E00522B67 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
+		1A9DBC2628B9ECB300522B67 /* AccessKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessKey.swift; sourceTree = "<group>"; };
 		AD5263E088346F01270DB01B /* Pods_MSALiOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MSALiOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7CBF881BF504F0A15F7FD5C /* Pods-MSALiOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MSALiOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MSALiOS/Pods-MSALiOS.debug.xcconfig"; sourceTree = "<group>"; };
 		DF06CB9178C218430A5EDADB /* Pods-MSALiOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MSALiOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-MSALiOS/Pods-MSALiOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -42,6 +50,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A029D0C28B6053A00BA95C0 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				FBA79EA21E9A038700179A54 /* ViewController.swift */,
+				1A9DBC1628B82D6200522B67 /* ProfileViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1A029D0D28B6054700BA95C0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				FBA79EA41E9A038700179A54 /* Main.storyboard */,
+				1A9DBC1828B82D7E00522B67 /* Profile.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		1A029D0E28B6055100BA95C0 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				1A029D0F28B6057F00BA95C0 /* AccountModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		AED3371A3BA5BB965217412E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -90,11 +124,13 @@
 			children = (
 				FBBE35B41E9DAE6C00460053 /* MSALiOS.entitlements */,
 				FBA79EA01E9A038700179A54 /* AppDelegate.swift */,
-				FBA79EA21E9A038700179A54 /* ViewController.swift */,
-				FBA79EA41E9A038700179A54 /* Main.storyboard */,
+				1A029D0E28B6055100BA95C0 /* Model */,
+				1A029D0C28B6053A00BA95C0 /* Controller */,
+				1A029D0D28B6054700BA95C0 /* View */,
 				FBA79EA71E9A038700179A54 /* Assets.xcassets */,
 				FBA79EA91E9A038700179A54 /* LaunchScreen.storyboard */,
 				FBA79EAC1E9A038700179A54 /* Info.plist */,
+				1A9DBC2628B9ECB300522B67 /* AccessKey.swift */,
 			);
 			path = MSALiOS;
 			sourceTree = "<group>";
@@ -128,12 +164,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1340;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
 					FBA79E9C1E9A038700179A54 = {
 						CreatedOnToolsVersion = 8.3;
-						DevelopmentTeam = UBF8T346G9;
+						DevelopmentTeam = B82H7GW29K;
 						LastSwiftMigration = 0930;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -177,6 +213,7 @@
 				FBA79EAB1E9A038700179A54 /* LaunchScreen.storyboard in Resources */,
 				FBA79EA81E9A038700179A54 /* Assets.xcassets in Resources */,
 				FBA79EA61E9A038700179A54 /* Main.storyboard in Resources */,
+				1A9DBC1928B82D7E00522B67 /* Profile.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,10 +228,12 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-MSALiOS/Pods-MSALiOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/MSAL/MSAL.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MSAL.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -226,8 +265,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A9DBC2728B9ECB300522B67 /* AccessKey.swift in Sources */,
 				FBA79EA31E9A038700179A54 /* ViewController.swift in Sources */,
+				1A9DBC1728B82D6200522B67 /* ProfileViewController.swift in Sources */,
 				FBA79EA11E9A038700179A54 /* AppDelegate.swift in Sources */,
+				1A029D1028B6057F00BA95C0 /* AccountModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,6 +299,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -278,6 +321,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -302,7 +346,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -317,6 +361,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -338,6 +383,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -356,7 +402,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -373,10 +419,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = MSALiOS/MSALiOS.entitlements;
-				DEVELOPMENT_TEAM = UBF8T346G9;
+				DEVELOPMENT_TEAM = B82H7GW29K;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = MSALiOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.identitysample.MSALiOS;
@@ -394,10 +440,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = MSALiOS/MSALiOS.entitlements;
-				DEVELOPMENT_TEAM = UBF8T346G9;
+				DEVELOPMENT_TEAM = B82H7GW29K;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = MSALiOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.identitysample.MSALiOS;

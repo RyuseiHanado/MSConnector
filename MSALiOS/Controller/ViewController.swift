@@ -1,67 +1,28 @@
-//------------------------------------------------------------------------------
-//
-// Copyright (c) Microsoft Corporation.
-// All rights reserved.
-//
-// This code is licensed under the MIT License.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files(the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions :
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-//
-//------------------------------------------------------------------------------
-
 import UIKit
 import MSAL
-
-/// 😃 A View Controller that will respond to the events of the Storyboard.
+import SwiftyJSON
 
 class ViewController: UIViewController, UITextFieldDelegate, URLSessionDelegate {
-    
-    // Update the below to your client ID you received in the portal. The below is for running the demo only
-    let kClientID = "66855f8a-60cd-445e-a9bb-8cd8eadbd3fa"
-    let kGraphEndpoint = "https://graph.microsoft.com/"
-    let kAuthority = "https://login.microsoftonline.com/common"
-    let kRedirectUri = "msauth.com.microsoft.identitysample.MSALiOS://auth"
-    
-    let kScopes: [String] = ["user.read"]
     
     var accessToken = String()
     var applicationContext : MSALPublicClientApplication?
     var webViewParamaters : MSALWebviewParameters?
-
-    var loggingText: UITextView!
-    var signOutButton: UIButton!
-    var callGraphButton: UIButton!
-    var usernameLabel: UILabel!
-    
     var currentAccount: MSALAccount?
-    
     var currentDeviceMode: MSALDeviceMode?
-
-    /**
-        Setup public client application in viewDidLoad
-    */
+    
+//    var loggingText: UITextView!
+    var titleLabel: UILabel!
+    var signOutButton: UIButton!
+    var signInButton: UIButton!
+    var usernameLabel: UILabel!
+    var naviBar: UINavigationBar!
 
     override func viewDidLoad() {
-
+        print("viewDidLoad")
+        
         super.viewDidLoad()
-
-        initUI()
+        
+        self.initUI()
         
         do {
             try self.initMSAL()
@@ -72,9 +33,12 @@ class ViewController: UIViewController, UITextFieldDelegate, URLSessionDelegate 
         self.loadCurrentAccount()
         self.refreshDeviceMode()
         self.platformViewDidLoadSetup()
+        
     }
     
     func platformViewDidLoadSetup() {
+        
+        print("platformViewDidLoadSetup")
                 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(appCameToForeGround(notification:)),
@@ -84,12 +48,13 @@ class ViewController: UIViewController, UITextFieldDelegate, URLSessionDelegate 
     }
 
     override func viewWillAppear(_ animated: Bool) {
-
+        print("viewWillAppear")
         super.viewWillAppear(animated)
         self.loadCurrentAccount()
     }
     
     @objc func appCameToForeGround(notification: Notification) {
+        print("appCameToForeGround")
         self.loadCurrentAccount()
     }
 }
@@ -99,39 +64,25 @@ class ViewController: UIViewController, UITextFieldDelegate, URLSessionDelegate 
 
 extension ViewController {
     
-    /**
-     
-     Initialize a MSALPublicClientApplication with a given clientID and authority
-     
-     - clientId:            The clientID of your application, you should get this from the app portal.
-     - redirectUri:         A redirect URI of your application, you should get this from the app portal.
-     If nil, MSAL will create one by default. i.e./ msauth.<bundleID>://auth
-     - authority:           A URL indicating a directory that MSAL can use to obtain tokens. In Azure AD
-     it is of the form https://<instance/<tenant>, where <instance> is the
-     directory host (e.g. https://login.microsoftonline.com) and <tenant> is a
-     identifier within the directory itself (e.g. a domain associated to the
-     tenant, such as contoso.onmicrosoft.com, or the GUID representing the
-     TenantID property of the directory)
-     - error                The error that occurred creating the application object, if any, if you're
-     not interested in the specific error pass in nil.
-     */
     func initMSAL() throws {
+        print("initMSAL")
         
-        guard let authorityURL = URL(string: kAuthority) else {
+        guard let authorityURL = URL(string: K.kAuthority) else {
             self.updateLogging(text: "Unable to create authority URL")
             return
         }
         
         let authority = try MSALAADAuthority(url: authorityURL)
         
-        let msalConfiguration = MSALPublicClientApplicationConfig(clientId: kClientID,
-                                                                  redirectUri: kRedirectUri,
+        let msalConfiguration = MSALPublicClientApplicationConfig(clientId: K.kClientID,
+                                                                  redirectUri: K.kRedirectUri,
                                                                   authority: authority)
         self.applicationContext = try MSALPublicClientApplication(configuration: msalConfiguration)
         self.initWebViewParams()
     }
     
     func initWebViewParams() {
+        print("initWebViewParams")
         self.webViewParamaters = MSALWebviewParameters(authPresentationViewController: self)
     }
 }
@@ -141,6 +92,8 @@ extension ViewController {
 extension ViewController {
     
     @objc func getDeviceMode(_ sender: UIButton) {
+        
+        print("getDeviceMode")
         
         if #available(iOS 13.0, *) {
             self.applicationContext?.getDeviceInformation(with: nil, completionBlock: { (deviceInformation, error) in
@@ -165,11 +118,8 @@ extension ViewController {
 
 extension ViewController {
     
-    /**
-     This will invoke the authorization flow.
-     */
-    
     @objc func callGraphAPI(_ sender: UIButton) {
+        print("callGraphAPI")
         
         self.loadCurrentAccount { (account) in
             
@@ -186,11 +136,12 @@ extension ViewController {
     }
     
     func acquireTokenInteractively() {
+        print("acquireTokenInteractively")
         
         guard let applicationContext = self.applicationContext else { return }
         guard let webViewParameters = self.webViewParamaters else { return }
 
-        let parameters = MSALInteractiveTokenParameters(scopes: kScopes, webviewParameters: webViewParameters)
+        let parameters = MSALInteractiveTokenParameters(scopes: K.kScopes, webviewParameters: webViewParameters)
         parameters.promptType = .selectAccount
         
         applicationContext.acquireToken(with: parameters) { (result, error) in
@@ -215,33 +166,17 @@ extension ViewController {
     }
     
     func acquireTokenSilently(_ account : MSALAccount!) {
+        print("acquireTokenSilently")
         
         guard let applicationContext = self.applicationContext else { return }
         
-        /**
-         
-         Acquire a token for an existing account silently
-         
-         - forScopes:           Permissions you want included in the access token received
-         in the result in the completionBlock. Not all scopes are
-         guaranteed to be included in the access token returned.
-         - account:             An account object that we retrieved from the application object before that the
-         authentication flow will be locked down to.
-         - completionBlock:     The completion block that will be called when the authentication
-         flow completes, or encounters an error.
-         */
-        
-        let parameters = MSALSilentTokenParameters(scopes: kScopes, account: account)
+        let parameters = MSALSilentTokenParameters(scopes: K.kScopes, account: account)
         
         applicationContext.acquireTokenSilent(with: parameters) { (result, error) in
             
             if let error = error {
                 
                 let nsError = error as NSError
-                
-                // interactionRequired means we need to ask the user to sign-in. This usually happens
-                // when the user's Refresh Token is expired or if the user has changed their password
-                // among other possible reasons.
                 
                 if (nsError.domain == MSALErrorDomain) {
                     
@@ -272,15 +207,17 @@ extension ViewController {
     }
     
     func getGraphEndpoint() -> String {
-        return kGraphEndpoint.hasSuffix("/") ? (kGraphEndpoint + "v1.0/me/") : (kGraphEndpoint + "/v1.0/me/");
+        return K.kGraphEndpoint.hasSuffix("/") ? (K.kGraphEndpoint + "v1.0/me/") : (K.kGraphEndpoint + "/v1.0/me/");
     }
     
-    /**
-     This will invoke the call to the Microsoft Graph API. It uses the
-     built in URLSession to create a connection.
-     */
+    // ProfilePhoto取得エンドポイント
+    func getProfilePhotoEndpoint() -> String {
+        return K.kProfilePhotoEndpoint.hasSuffix("/") ? (K.kProfilePhotoEndpoint) : (K.kProfilePhotoEndpoint);
+    }
     
     func getContentWithToken() {
+        
+        print("getContentWithToken")
         
         // Specify the Graph API endpoint
         let graphURI = getGraphEndpoint()
@@ -297,6 +234,9 @@ extension ViewController {
                 return
             }
             
+            
+            Account.accountData = try! JSON(data: data!)
+            
             guard let result = try? JSONSerialization.jsonObject(with: data!, options: []) else {
                 
                 self.updateLogging(text: "Couldn't deserialize result JSON")
@@ -304,6 +244,50 @@ extension ViewController {
             }
             
             self.updateLogging(text: "Result from Graph: \(result))")
+            
+            self.getProfilePhoto()
+            
+            }.resume()
+    }
+    
+    // プロフィール写真取得
+    func getProfilePhoto() {
+        print("getProfilePhoto")
+        
+        // Specify the Graph API endpoint
+        let graphURI = getProfilePhotoEndpoint()
+        let url = URL(string: graphURI)
+        var request = URLRequest(url: url!)
+        
+        // Set the Authorization header for the request. We use Bearer tokens, so we specify Bearer + the token we got from the result
+        request.setValue("Bearer \(self.accessToken)", forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            if let error = error {
+                self.updateLogging(text: "Couldn't get graph result: \(error)")
+                return
+            }
+
+            Account.accountImage = data!
+            
+            if Thread.isMainThread {
+                let vc = UIStoryboard(name: "Profile", bundle: nil).instantiateInitialViewController()! as ProfileViewController
+                vc.currentAccountData = Account.accountData
+                vc.currentAccountImage = Account.accountImage
+                // ③画面遷移（Navigation Controller管理下の場合）
+                self.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                DispatchQueue.main.async {
+                    let vc = UIStoryboard(name: "Profile", bundle: nil).instantiateInitialViewController()! as ProfileViewController
+                    vc.currentAccountData = Account.accountData
+                    vc.currentAccountImage = Account.accountImage
+                    // ③画面遷移（Navigation Controller管理下の場合）
+                    self.navigationController?.pushViewController(vc, animated: true)
+                    // モーダル表示
+                    // self.navigationController?.showDetailViewController(vc, sender: nil)
+                }
+            }
             
             }.resume()
     }
@@ -318,15 +302,13 @@ extension ViewController {
     typealias AccountCompletion = (MSALAccount?) -> Void
 
     func loadCurrentAccount(completion: AccountCompletion? = nil) {
+        print("loadCurrentAccount")
         
         guard let applicationContext = self.applicationContext else { return }
         
         let msalParameters = MSALParameters()
         msalParameters.completionBlockQueue = DispatchQueue.main
                 
-        // Note that this sample showcases an app that signs in a single account at a time
-        // If you're building a more complex app that signs in multiple accounts at the same time, you'll need to use a different account retrieval API that specifies account identifier
-        // For example, see "accountsFromDeviceForParameters:completionBlock:" - https://azuread.github.io/microsoft-authentication-library-for-objc/Classes/MSALPublicClientApplication.html#/c:objc(cs)MSALPublicClientApplication(im)accountsFromDeviceForParameters:completionBlock:
         applicationContext.getCurrentAccount(with: msalParameters, completionBlock: { (currentAccount, previousAccount, error) in
             
             if let error = error {
@@ -367,23 +349,16 @@ extension ViewController {
         })
     }
     
-    /**
-     This action will invoke the remove account APIs to clear the token cache
-     to sign out a user from this application.
-     */
+
     @objc func signOut(_ sender: UIButton) {
+        
+        print("signOut")
         
         guard let applicationContext = self.applicationContext else { return }
         
         guard let account = self.currentAccount else { return }
         
         do {
-            
-            /**
-             Removes all tokens from the cache for this application for the provided account
-             
-             - account:    The account to remove from the cache
-             */
             
             let signoutParameters = MSALSignoutParameters(webviewParameters: self.webViewParamaters!)
             
@@ -416,6 +391,7 @@ extension ViewController {
 extension ViewController {
     
     func refreshDeviceMode() {
+        print("refreshDeviceMode")
         
         if #available(iOS 13.0, *) {
             self.applicationContext?.getDeviceInformation(with: nil, completionBlock: { (deviceInformation, error) in
@@ -430,110 +406,164 @@ extension ViewController {
     }
 }
 
+
 // MARK: UI Helpers
 extension ViewController {
     
     func initUI() {
+        
+        print("initUI")
+        
+        // naviBar
+        self.navigationItem.title = "Microsoft Connector"
+        self.navigationItem.leftBarButtonItem?.tintColor = .white
+//        self.naviBar = navigationController?.navigationBar
+                
+//        leftBarButton = UIBarButtonItem(title: "< Previous", style: .plain, target: self, action: #selector(ViewController.tappedLeftBarButton))
+//
+//        rightBarButton = UIBarButtonItem(title: "Next >", style: .plain, target: self, action: #selector(ViewController.tappedRightBarButton))
+//
+//        self.navigationItem.leftBarButtonItem = leftBarButton
+//        self.navigationItem.rightBarButtonItem = rightBarButton
+        
+        self.view.backgroundColor = UIColor.white
         
         usernameLabel = UILabel()
         usernameLabel.translatesAutoresizingMaskIntoConstraints = false
         usernameLabel.text = ""
         usernameLabel.textColor = .darkGray
         usernameLabel.textAlignment = .right
-        
+
         self.view.addSubview(usernameLabel)
-        
+
         usernameLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 50.0).isActive = true
         usernameLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10.0).isActive = true
         usernameLabel.widthAnchor.constraint(equalToConstant: 300.0).isActive = true
         usernameLabel.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
         
-        // Add call Graph button
-        callGraphButton  = UIButton()
-        callGraphButton.translatesAutoresizingMaskIntoConstraints = false
-        callGraphButton.setTitle("Call Microsoft Graph API", for: .normal)
-        callGraphButton.setTitleColor(.blue, for: .normal)
-        callGraphButton.addTarget(self, action: #selector(callGraphAPI(_:)), for: .touchUpInside)
-        self.view.addSubview(callGraphButton)
+        // titleLabel
+        titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = "MS365 接続テスト"
+        titleLabel.textColor = .darkGray
+        titleLabel.textAlignment = .center
+        titleLabel.font = UIFont.systemFont(ofSize: 28.0)
+        titleLabel.textColor = .black
+
+        self.view.addSubview(titleLabel)
+
+        titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 180).isActive = true
+        titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        titleLabel.widthAnchor.constraint(equalToConstant: 300.0).isActive = true
+        titleLabel.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
         
-        callGraphButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        callGraphButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 120.0).isActive = true
-        callGraphButton.widthAnchor.constraint(equalToConstant: 300.0).isActive = true
-        callGraphButton.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
+        // Add call signInButton button
+        // 中心に持ってくるのが難しい
+        // AutoLayoutしてるから、ここで位置指定しなくてよさそう
+        signInButton  = UIButton(frame: CGRect(x: ((Int(self.view.bounds.width)-250)/2), y: Int(view.frame.height) / 2, width: 250, height: 70))
+        // 縦横中心になる
+        // callGraphButton.center = self.view.center
+        signInButton.translatesAutoresizingMaskIntoConstraints = false
+        signInButton.backgroundColor = UIColor.tintColor
+        signInButton.layer.cornerRadius = 8
+        signInButton.setTitle("サインイン", for: .normal)
+        signInButton.setTitleColor(.white, for: .normal)
+        signInButton.addTarget(self, action: #selector(callGraphAPI(_:)), for: .touchUpInside)
+        self.view.addSubview(signInButton)
+        
+        signInButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        signInButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 300).isActive = true
+        signInButton.widthAnchor.constraint(equalToConstant: 250).isActive = true
+        signInButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
         // Add sign out button
         signOutButton = UIButton()
         signOutButton.translatesAutoresizingMaskIntoConstraints = false
-        signOutButton.setTitle("Sign Out", for: .normal)
-        signOutButton.setTitleColor(.blue, for: .normal)
+//        signOutButton.backgroundColor = UIColor.tintColor
+        signOutButton.layer.cornerRadius = 8
+        signOutButton.setTitle("サインアウト", for: .normal)
+        signOutButton.setTitleColor(.white, for: .normal)
         signOutButton.setTitleColor(.gray, for: .disabled)
         signOutButton.addTarget(self, action: #selector(signOut(_:)), for: .touchUpInside)
         self.view.addSubview(signOutButton)
         
         signOutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        signOutButton.topAnchor.constraint(equalTo: callGraphButton.bottomAnchor, constant: 10.0).isActive = true
-        signOutButton.widthAnchor.constraint(equalToConstant: 150.0).isActive = true
-        signOutButton.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
-        
-        let deviceModeButton = UIButton()
-        deviceModeButton.translatesAutoresizingMaskIntoConstraints = false
-        deviceModeButton.setTitle("Get device info", for: .normal);
-        deviceModeButton.setTitleColor(.blue, for: .normal);
-        deviceModeButton.addTarget(self, action: #selector(getDeviceMode(_:)), for: .touchUpInside)
-        self.view.addSubview(deviceModeButton)
-        
-        deviceModeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        deviceModeButton.topAnchor.constraint(equalTo: signOutButton.bottomAnchor, constant: 10.0).isActive = true
-        deviceModeButton.widthAnchor.constraint(equalToConstant: 150.0).isActive = true
-        deviceModeButton.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
-        
-        // Add logging textfield
-        loggingText = UITextView()
-        loggingText.isUserInteractionEnabled = false
-        loggingText.translatesAutoresizingMaskIntoConstraints = false
-        
-        self.view.addSubview(loggingText)
-        
-        loggingText.topAnchor.constraint(equalTo: deviceModeButton.bottomAnchor, constant: 10.0).isActive = true
-        loggingText.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 10.0).isActive = true
-        loggingText.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -10.0).isActive = true
-        loggingText.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 10.0).isActive = true
+        signOutButton.topAnchor.constraint(equalTo: signInButton.bottomAnchor, constant: 20).isActive = true
+        signOutButton.widthAnchor.constraint(equalToConstant: 250).isActive = true
+        signOutButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
+
     }
     
     func updateLogging(text : String) {
+        print("updateLogging")
         
+//        if Thread.isMainThread {
+//            self.loggingText.text = text
+//        } else {
+//            DispatchQueue.main.async {
+//                self.loggingText.text = text
+//            }
+//        }
+    }
+    
+    func updateSignInButton(enabled : Bool) {
+        print("updateSignInButton")
         if Thread.isMainThread {
-            self.loggingText.text = text
+            self.signInButton.isEnabled = enabled
+            self.signInButton.backgroundColor = enabled ?  UIColor.tintColor : UIColor.lightGray
+            
         } else {
             DispatchQueue.main.async {
-                self.loggingText.text = text
+                self.signInButton.isEnabled = enabled
+                self.signInButton.backgroundColor = enabled ?  UIColor.tintColor : UIColor.lightGray
             }
         }
     }
     
     func updateSignOutButton(enabled : Bool) {
+        print("updateSignOutButton")
         if Thread.isMainThread {
             self.signOutButton.isEnabled = enabled
+            self.signOutButton.backgroundColor = enabled ?  UIColor.tintColor : UIColor.lightGray
         } else {
             DispatchQueue.main.async {
                 self.signOutButton.isEnabled = enabled
+                self.signOutButton.backgroundColor = enabled ?  UIColor.tintColor : UIColor.lightGray
             }
         }
     }
     
     func updateAccountLabel() {
+        print("updateAccountLabel")
         
         guard let currentAccount = self.currentAccount else {
-            self.usernameLabel.text = "Signed out"
+            if Thread.isMainThread {
+                self.usernameLabel.text = "サインインしてください"
+                
+            } else {
+                DispatchQueue.main.async {
+                    self.usernameLabel.text = "サインインしてください"
+                }
+            }
             return
         }
+        print(currentAccount.username!)
+        if Thread.isMainThread {
+            self.usernameLabel.text = "サインイン中"
+        } else {
+            DispatchQueue.main.async {
+                self.usernameLabel.text = "サインイン中"
+            }
+        }
         
-        self.usernameLabel.text = currentAccount.username
     }
     
     func updateCurrentAccount(account: MSALAccount?) {
+        print("updateCurrentAccount")
         self.currentAccount = account
         self.updateAccountLabel()
         self.updateSignOutButton(enabled: account != nil)
+        self.updateSignInButton(enabled: account == nil)
     }
+
 }

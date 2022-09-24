@@ -21,6 +21,7 @@ class ProfileViewController: UIViewController {
     var mailLabel: UILabel!
     var idLabel: UILabel!
     var signOutButton: UIButton!
+    var mailButton: UIButton!
     
     var userName: String = ""
     var officeLocation: String = ""
@@ -28,6 +29,8 @@ class ProfileViewController: UIViewController {
     var mail: String = ""
     var id: String = ""
     var businessPhones: [String] = []
+    
+    let msgraphManager = MSGraphManager()
     
 
     override func viewDidLoad() {
@@ -91,7 +94,7 @@ extension ProfileViewController {
         userImage.image = UIImage(data: currentAccountImage!)
         userImage.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(userImage)
-        userImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
+        userImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 150).isActive = true
         userImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         userImage.widthAnchor.constraint(equalToConstant: 150).isActive = true
         userImage.heightAnchor.constraint(equalToConstant: 150).isActive = true
@@ -148,8 +151,23 @@ extension ProfileViewController {
         mailLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         mailLabel.widthAnchor.constraint(equalToConstant: 300.0).isActive = true
         mailLabel.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
+    
         
-  
+        // mail button
+        mailButton = UIButton()
+        mailButton.translatesAutoresizingMaskIntoConstraints = false
+        mailButton.backgroundColor = UIColor.tintColor
+        mailButton.layer.cornerRadius = 8
+        mailButton.setTitle("メール確認", for: .normal)
+        mailButton.setTitleColor(.white, for: .normal)
+        mailButton.setTitleColor(.gray, for: .disabled)
+        mailButton.addTarget(self, action: #selector(mailButtonPressed(_:)), for: .touchUpInside)
+        self.view.addSubview(mailButton)
+
+        mailButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        mailButton.topAnchor.constraint(equalTo: mailLabel.bottomAnchor, constant: 50).isActive = true
+        mailButton.widthAnchor.constraint(equalToConstant: 250).isActive = true
+        mailButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
         // close button
         signOutButton = UIButton()
@@ -163,7 +181,7 @@ extension ProfileViewController {
         self.view.addSubview(signOutButton)
         
         signOutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        signOutButton.topAnchor.constraint(equalTo: mailLabel.bottomAnchor, constant: 150).isActive = true
+        signOutButton.topAnchor.constraint(equalTo: mailButton.bottomAnchor, constant: 20).isActive = true
         signOutButton.widthAnchor.constraint(equalToConstant: 250).isActive = true
         signOutButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
 
@@ -173,6 +191,24 @@ extension ProfileViewController {
         // 現在のビューコントローラを閉じる
         // self.dismiss(animated: true, completion: nil)
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func mailButtonPressed(_ sender: UIButton) {
+        print("mailButtonPressed!!")
+        
+//        msgraphManager.getMailList()
+        
+        if Thread.isMainThread {
+            let vc = UIStoryboard(name: "MailList", bundle: nil).instantiateInitialViewController()! as MailListTableViewController
+            // ③画面遷移（Navigation Controller管理下の場合）
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            DispatchQueue.main.async {
+                let vc = UIStoryboard(name: "MailList", bundle: nil).instantiateInitialViewController()! as MailListTableViewController
+                // ③画面遷移（Navigation Controller管理下の場合）
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+        }
     }
     
 }

@@ -31,7 +31,5 @@ struct Account {
         accountData["id"].stringValue
     }
     
-//    static var businessPhones: [String] {
-//        accountData["businessPhones"].array!
-//    }
+    static var mailList: [MailData] = []
 }

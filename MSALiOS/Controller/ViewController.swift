@@ -4,6 +4,8 @@ import SwiftyJSON
 
 class ViewController: UIViewController, UITextFieldDelegate, URLSessionDelegate {
     
+    let msgraphManager = MSGraphManager()
+    
     var accessToken = String()
     var applicationContext : MSALPublicClientApplication?
     var webViewParamaters : MSALWebviewParameters?
@@ -16,6 +18,7 @@ class ViewController: UIViewController, UITextFieldDelegate, URLSessionDelegate 
     var signInButton: UIButton!
     var usernameLabel: UILabel!
     var naviBar: UINavigationBar!
+    var mailButton: UIButton!
 
     override func viewDidLoad() {
         print("viewDidLoad")
@@ -78,6 +81,8 @@ extension ViewController {
                                                                   redirectUri: K.kRedirectUri,
                                                                   authority: authority)
         self.applicationContext = try MSALPublicClientApplication(configuration: msalConfiguration)
+
+        
         self.initWebViewParams()
     }
     
@@ -133,6 +138,7 @@ extension ViewController {
             
             self.acquireTokenSilently(currentAccount)
         }
+        
     }
     
     func acquireTokenInteractively() {
@@ -158,8 +164,8 @@ extension ViewController {
                 return
             }
             
-            self.accessToken = result.accessToken
-            self.updateLogging(text: "Access token is \(self.accessToken)")
+            K.accessToken = result.accessToken
+            self.updateLogging(text: "Access token is \(K.accessToken)")
             self.updateCurrentAccount(account: result.account)
             self.getContentWithToken()
         }
@@ -199,8 +205,8 @@ extension ViewController {
                 return
             }
             
-            self.accessToken = result.accessToken
-            self.updateLogging(text: "Refreshed Access token is \(self.accessToken)")
+            K.accessToken = result.accessToken
+            self.updateLogging(text: "Refreshed Access token is \(K.accessToken)")
             self.updateSignOutButton(enabled: true)
             self.getContentWithToken()
         }
@@ -225,7 +231,7 @@ extension ViewController {
         var request = URLRequest(url: url!)
         
         // Set the Authorization header for the request. We use Bearer tokens, so we specify Bearer + the token we got from the result
-        request.setValue("Bearer \(self.accessToken)", forHTTPHeaderField: "Authorization")
+        request.setValue("Bearer \(K.accessToken)", forHTTPHeaderField: "Authorization")
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             
@@ -260,7 +266,7 @@ extension ViewController {
         var request = URLRequest(url: url!)
         
         // Set the Authorization header for the request. We use Bearer tokens, so we specify Bearer + the token we got from the result
-        request.setValue("Bearer \(self.accessToken)", forHTTPHeaderField: "Authorization")
+        request.setValue("Bearer \(K.accessToken)", forHTTPHeaderField: "Authorization")
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             
@@ -288,8 +294,21 @@ extension ViewController {
                     // self.navigationController?.showDetailViewController(vc, sender: nil)
                 }
             }
-            
-            }.resume()
+        }.resume()
+    }
+    
+       
+    func updateLogging(text : String) {
+        print("updateLogging")
+        print(text)
+        
+//        if Thread.isMainThread {
+//            self.loggingText.text = text
+//        } else {
+//            DispatchQueue.main.async {
+//                self.loggingText.text = text
+//            }
+//        }
     }
 
 }
@@ -320,6 +339,10 @@ extension ViewController {
                 
                 self.updateLogging(text: "Found a signed in account \(String(describing: currentAccount.username)). Updating data for that account...")
                 
+                // サインインしている場合はサインアウト
+//                self.signOut()
+                
+                // サインインを保持する場合
                 self.updateCurrentAccount(account: currentAccount)
                 
                 if let completion = completion {
@@ -340,7 +363,7 @@ extension ViewController {
                 self.updateLogging(text: "Account signed out. Updating UX")
             }
             
-            self.accessToken = ""
+            K.accessToken = ""
             self.updateCurrentAccount(account: nil)
             
             if let completion = completion {
@@ -350,10 +373,14 @@ extension ViewController {
     }
     
 
-    @objc func signOut(_ sender: UIButton) {
+    @objc func signOutPressed(_ sender: UIButton) {
         
-        print("signOut")
+        print("signOutPressed!!")
         
+        signOut()
+    }
+    
+    func signOut() {
         guard let applicationContext = self.applicationContext else { return }
         
         guard let account = self.currentAccount else { return }
@@ -379,7 +406,7 @@ extension ViewController {
                 }
                 
                 self.updateLogging(text: "Sign out completed successfully")
-                self.accessToken = ""
+                K.accessToken = ""
                 self.updateCurrentAccount(account: nil)
             })
             
@@ -484,7 +511,7 @@ extension ViewController {
         signOutButton.setTitle("サインアウト", for: .normal)
         signOutButton.setTitleColor(.white, for: .normal)
         signOutButton.setTitleColor(.gray, for: .disabled)
-        signOutButton.addTarget(self, action: #selector(signOut(_:)), for: .touchUpInside)
+        signOutButton.addTarget(self, action: #selector(signOutPressed(_:)), for: .touchUpInside)
         self.view.addSubview(signOutButton)
         
         signOutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -492,18 +519,6 @@ extension ViewController {
         signOutButton.widthAnchor.constraint(equalToConstant: 250).isActive = true
         signOutButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
 
-    }
-    
-    func updateLogging(text : String) {
-        print("updateLogging")
-        
-//        if Thread.isMainThread {
-//            self.loggingText.text = text
-//        } else {
-//            DispatchQueue.main.async {
-//                self.loggingText.text = text
-//            }
-//        }
     }
     
     func updateSignInButton(enabled : Bool) {

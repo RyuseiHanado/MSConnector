@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		1A029D1028B6057F00BA95C0 /* AccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A029D0F28B6057F00BA95C0 /* AccountModel.swift */; };
+		1A0F9F2A28C42C920099E80C /* MSGraphManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0F9F2928C42C920099E80C /* MSGraphManager.swift */; };
+		1A0F9F2C28C45D4B0099E80C /* MailListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0F9F2B28C45D4B0099E80C /* MailListModel.swift */; };
+		1A0F9F3028C465810099E80C /* MailListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0F9F2F28C465810099E80C /* MailListTableViewController.swift */; };
+		1A0F9F3228C468240099E80C /* MailList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A0F9F3128C468240099E80C /* MailList.storyboard */; };
+		1A0F9F3628C620CD0099E80C /* SendMailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0F9F3528C620CD0099E80C /* SendMailModel.swift */; };
 		1A9DBC1728B82D6200522B67 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9DBC1628B82D6200522B67 /* ProfileViewController.swift */; };
 		1A9DBC1928B82D7E00522B67 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A9DBC1828B82D7E00522B67 /* Profile.storyboard */; };
 		1A9DBC2728B9ECB300522B67 /* AccessKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9DBC2628B9ECB300522B67 /* AccessKey.swift */; };
@@ -21,6 +26,11 @@
 
 /* Begin PBXFileReference section */
 		1A029D0F28B6057F00BA95C0 /* AccountModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountModel.swift; sourceTree = "<group>"; };
+		1A0F9F2928C42C920099E80C /* MSGraphManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSGraphManager.swift; sourceTree = "<group>"; };
+		1A0F9F2B28C45D4B0099E80C /* MailListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailListModel.swift; sourceTree = "<group>"; };
+		1A0F9F2F28C465810099E80C /* MailListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailListTableViewController.swift; sourceTree = "<group>"; };
+		1A0F9F3128C468240099E80C /* MailList.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MailList.storyboard; sourceTree = "<group>"; };
+		1A0F9F3528C620CD0099E80C /* SendMailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMailModel.swift; sourceTree = "<group>"; };
 		1A9DBC1628B82D6200522B67 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		1A9DBC1828B82D7E00522B67 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		1A9DBC2628B9ECB300522B67 /* AccessKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessKey.swift; sourceTree = "<group>"; };
@@ -55,6 +65,7 @@
 			children = (
 				FBA79EA21E9A038700179A54 /* ViewController.swift */,
 				1A9DBC1628B82D6200522B67 /* ProfileViewController.swift */,
+				1A0F9F2F28C465810099E80C /* MailListTableViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -64,6 +75,7 @@
 			children = (
 				FBA79EA41E9A038700179A54 /* Main.storyboard */,
 				1A9DBC1828B82D7E00522B67 /* Profile.storyboard */,
+				1A0F9F3128C468240099E80C /* MailList.storyboard */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -72,6 +84,9 @@
 			isa = PBXGroup;
 			children = (
 				1A029D0F28B6057F00BA95C0 /* AccountModel.swift */,
+				1A0F9F2928C42C920099E80C /* MSGraphManager.swift */,
+				1A0F9F2B28C45D4B0099E80C /* MailListModel.swift */,
+				1A0F9F3528C620CD0099E80C /* SendMailModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -212,6 +227,7 @@
 			files = (
 				FBA79EAB1E9A038700179A54 /* LaunchScreen.storyboard in Resources */,
 				FBA79EA81E9A038700179A54 /* Assets.xcassets in Resources */,
+				1A0F9F3228C468240099E80C /* MailList.storyboard in Resources */,
 				FBA79EA61E9A038700179A54 /* Main.storyboard in Resources */,
 				1A9DBC1928B82D7E00522B67 /* Profile.storyboard in Resources */,
 			);
@@ -267,9 +283,13 @@
 			files = (
 				1A9DBC2728B9ECB300522B67 /* AccessKey.swift in Sources */,
 				FBA79EA31E9A038700179A54 /* ViewController.swift in Sources */,
+				1A0F9F2A28C42C920099E80C /* MSGraphManager.swift in Sources */,
+				1A0F9F2C28C45D4B0099E80C /* MailListModel.swift in Sources */,
 				1A9DBC1728B82D6200522B67 /* ProfileViewController.swift in Sources */,
 				FBA79EA11E9A038700179A54 /* AppDelegate.swift in Sources */,
+				1A0F9F3028C465810099E80C /* MailListTableViewController.swift in Sources */,
 				1A029D1028B6057F00BA95C0 /* AccountModel.swift in Sources */,
+				1A0F9F3628C620CD0099E80C /* SendMailModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,7 +445,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.identitysample.MSALiOS;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dopro.identitysample.MSALiOS;
 				PRODUCT_NAME = MSALiOS;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -446,7 +466,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.identitysample.MSALiOS;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dopro.identitysample.MSALiOS;
 				PRODUCT_NAME = MSALiOS;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
